@@ -30,7 +30,6 @@ const Login = () => {
 
   const checkProfile = async () => {
     const usr = await storage.getItem(keys.profile);
-    console.log(usr);
     if (usr) {
       setActionType('login');
       setProfile(JSON.parse(usr));
@@ -42,6 +41,7 @@ const Login = () => {
   useEffect(() => {
     checkProfile();
   }, []);
+
 
   const handleChange = (name: string) => (value: string) => {
     setUser({...user, [name]: value});

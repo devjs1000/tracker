@@ -7,6 +7,7 @@ import History from './History';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import Login from './Login';
+import NavBar from '../components/NavBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +23,10 @@ const Screen = () => {
             screenOptions={{
               tabBarActiveTintColor: 'tomato',
               tabBarShowLabel: false,
-            }}>
+              header: () => <NavBar />,
+            }}
+            
+            >
             <Tab.Screen
               name="Home"
               options={{
