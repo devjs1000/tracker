@@ -6,6 +6,7 @@ import {AddTitleAndDescription} from './AddTitleAndDescription';
 import {StartAndStopButton} from './StartAndStopButton';
 import {Timer} from './Timer';
 import {AboutTask} from './AboutTask';
+import {getDb, updateDb} from '../../helpers/db';
 
 const Home = () => {
   const [workStatus, setWorkStatus] = useState(false);
@@ -21,14 +22,15 @@ const Home = () => {
   const timeKey = new Date().toLocaleTimeString();
 
   const handlePress = async () => {
-    let active: any = (await storage.getItem(keys.active)) || null;
-    active = JSON.parse(active);
+    let active: any = await getDb(keys.active)
+    console.log('active', active);
     if (!workStatus) {
       setIsOpened(true);
     } else {
-      const data = (await storage.getItem(keys.data)) || '[]';
-      let parsedData = JSON.parse(data);
-      parsedData[active.date]?.forEach((item: any) => {
+      const data:any = await getDb(keys.data) || {};
+
+    
+      data[active.date]?.forEach((item: any) => {
         if (item.id === active?.time) {
           item.time = workTime;
         }
@@ -40,7 +42,7 @@ const Home = () => {
         date: null,
       });
       await updateDb(keys.time, workTime);
-      await updateDb(keys.data, parsedData);
+      await updateDb(keys.data, data);
       setWorkStatus(false);
       setTitle('');
       setDescription('');
@@ -52,19 +54,18 @@ const Home = () => {
   };
 
   const addTitleAndDescription = async () => {
-    const data = (await storage.getItem(keys.data)) || '[]';
-    let parsedData = JSON.parse(data);
-    if (Array.isArray(parsedData)) parsedData = {};
-    const isDateExist = parsedData[dateKey];
+    const data:any =await getDb(keys.data) || {};
+   
+    const isDateExist = data[dateKey];
     if (isDateExist) {
-      parsedData[dateKey].push({
+      data[dateKey].push({
         title,
         description,
         time: workTime,
         id: timeKey,
       });
     } else {
-      parsedData[dateKey] = [
+      data[dateKey] = [
         {
           title,
           description,
@@ -73,7 +74,7 @@ const Home = () => {
         },
       ];
     }
-    updateDb(keys.data, parsedData);
+    updateDb(keys.data, data);
     updateDb(keys.active, {
       status: true,
       time: timeKey,
@@ -88,24 +89,16 @@ const Home = () => {
   };
 
   const timerTime = (workTime.current - workTime.initial) / 1000;
-  const updateDb = async (key: string, data: any) => {
-    try {
-      await storage.setItem(key, JSON.stringify(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const dbSync = async () => {
-    const active: any = (await storage.getItem(keys.active)) || '{}';
-    const parsedActive = JSON.parse(active);
-    if (parsedActive.status) {
+    const active: any = await getDb(keys.active);
+    console.log('active', active);
+    if (active && active?.status) {
       setWorkStatus(true);
-      const data = (await storage.getItem(keys.data)) || '{}';
-      const parsedData = JSON.parse(data);
-      const activeDay = parsedData[parsedActive.date];
+      const data:any = await getDb(keys.data) || {};
+      const activeDay = data[active?.date];
       const activeTask = activeDay?.find(
-        (item: any) => item.id === parsedActive.time,
+        (item: any) => item.id === active.time,
       );
       if (activeTask) {
         setWorkTime(activeTask.time);

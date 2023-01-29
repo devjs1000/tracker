@@ -1,26 +1,25 @@
 import {Pressable, ScrollView, Text, View} from 'react-native';
 import {useEffect, useState} from 'react';
-import storage from '@react-native-async-storage/async-storage';
 import {keys} from '../../constants/core';
 import Accordion from '../../components/Accordion';
 import F5 from 'react-native-vector-icons/FontAwesome5';
 import {styles} from './styles';
+import { getDb, updateDb } from '../../helpers/db';
 
 const History = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     const getData = async () => {
-      const data: any = await storage.getItem(keys.data) || '{}';
-      setData(JSON.parse(data));
+      const data: any = await getDb(keys.data) || {};
+      setData(data);
     };
     getData();
-  }, [data]);
+  }, []);
 
   const deleteDateHistory = async (date: string) => {
-    const data: any = await storage.getItem(keys.data);
-    const parsedData = JSON.parse(data);
+    const parsedData:any=data;
     delete parsedData[date];
-    await storage.setItem(keys.data, JSON.stringify(parsedData));
+    await updateDb(keys.data, parsedData);
     setData(parsedData);
   };
 
