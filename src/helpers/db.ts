@@ -1,25 +1,19 @@
 import storage from '@react-native-async-storage/async-storage';
-import { decrypt, encrypt } from './encrypt';
 
-export const updateDb = async (key: string, value: any) => {
+export const updateDb = async (key: string, value: any, parse=true) => {
     try {
-        const hash = encrypt(JSON.stringify(value));
-        await storage.setItem(key, hash);
+        const val=parse ? JSON.stringify(value) : value;
+       storage.setItem(key, val);
     } catch (error) {
         console.error(error);
     }
 }
 
-export const getDb = async (key: string) => {
+export const getDb = async (key: string, parse=true) => {
     try {
-        const hash = await storage.getItem(key);
-        if (hash !== null) {
-            const res = decrypt(hash)
-            console.log({ res, key })
-            return res ? JSON.parse(res) : null;
-        }else{
-            return null;
-        }
+        const value:any= await storage.getItem(key);
+        const val=parse ? JSON?.parse(value) : value;
+        return  val || {}
     } catch (error) {
         console.error(error);
         return null;

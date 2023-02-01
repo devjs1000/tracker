@@ -1,88 +1,79 @@
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import CenterContainer from '../../ui/CenterContainer';
+import {styles} from './styles';
 import Input from '../../ui/Input';
 import Button from '../../ui/Button';
-import {keys} from '../../constants/core';
 import {useDispatch} from 'react-redux';
 import {login} from '../../states/process.slice';
-import {compare, encrypt} from '../../helpers/encrypt';
-import { getDb, updateDb } from '../../helpers/db';
+import {getDb, updateDb} from '../../helpers/db';
+import {keys} from '../../constants/core';
 
 const Login = () => {
+  const [mode, setMode] = useState('register');
   const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
-  const [actionType, setActionType] = useState('login');
+  const [form, setForm] = useState({
+    name: '',
+    password: '',
+  });
+
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
-    if (actionType === 'register') {
-      const usr = {
-        name: user.name,
-        password: encrypt(user.password),
-      };
-      await updateDb(keys.profile, usr);
-      dispatch(login(usr));
-    } else if (actionType === 'login') {
-      console.log('user', [
-        user.password,
-        profile.password,
-      ] )
-      const isValid = compare(user.password, profile.password);
-      if (isValid) {
-        dispatch(login(profile));
-      } else {
-        Alert.alert('Invalid password');
-      }
-    } else {
-      Alert.alert('App Error');
+  const handleChange = (name: string) => (value: string) => {
+    setForm({...form, [name]: value});
+  };
+
+  const updateProfile = async (update = true) => {
+    update && (await updateDb(keys.profile, form));
+    dispatch(login(form));
+  };
+
+  const handleSubmit = async () => {
+    isRegister ? await registerUser() : await loginUser();
+  };
+
+  const registerUser = async () => {
+    await updateProfile();
+  };
+
+  const isRegister = mode === 'register';
+
+  const loginUser = async () => {
+    const isValid = checkLogin();
+    if (isValid) {
+      await updateProfile(false);
+    }else{
+      Alert.alert('Invalid password');
     }
   };
 
-  const checkProfile = async () => {
-    const usr = await getDb(keys.profile);
-    console.log('usr', usr);
-    if (usr) {
-      setActionType('login');
-      setProfile(usr);
-    } else {
-      setActionType('register');
+  const checkLogin = () => {
+    return user.password === form.password;
+  };
+
+  const fetchMode = async () => {
+    const profile: any = await getDb(keys.profile);
+    if (profile.name && profile.password) {
+      setMode('login');
+      setUser(profile);
     }
   };
-  console.log('profile', profile);
 
   useEffect(() => {
-    checkProfile();
+    fetchMode();
+    console.log('user', user);
   }, []);
 
-  const handleChange = (name: string) => (value: string) => {
-    setUser({...user, [name]: value});
-  };
-
   return (
-    <CenterContainer>
+    <View style={styles.container}>
       <View>
-        {actionType === 'register' ? (
-          <Input placeholder="Your Name" onChangeText={handleChange('name')} />
-        ) : (
-          <Text style={styles.text}>Welcome back, {profile?.name}</Text>
+        {isRegister && (
+          <Input placeholder="name" onChangeText={handleChange('name')} />
         )}
-        <Input
-          placeholder="Your Password"
-          type="password"
-          onChangeText={handleChange('password')}
-        />
-        <Button onPress={handleLogin}>{actionType}</Button>
+        <Input secureTextEntry={true} placeholder="password" onChangeText={handleChange('password')} />
+        <Button onPress={handleSubmit}>{mode}</Button>
       </View>
-    </CenterContainer>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
 export default Login;

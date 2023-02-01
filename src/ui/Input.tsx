@@ -4,7 +4,7 @@ import React from 'react';
 const Input = ({...rest}: InputProps) => {
   return (
     <View>
-      <TextInput  placeholderTextColor={'gray'}  {...rest} style={styles.input} />
+      <TextInput placeholderTextColor={'gray'} {...rest} style={styles.input} />
     </View>
   );
 };
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     margin: 10,
-    marginHorizontal:"auto",
+    marginHorizontal: 'auto',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     width: 300,
     display: 'flex',
     color: 'black',
-  
   },
 });
 

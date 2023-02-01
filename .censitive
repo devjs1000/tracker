@@ -1,0 +1,2 @@
+.env:.*_KEY,.*_token,.*_PassWord
+id_rsa:*
