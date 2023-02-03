@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    backgroundColor: 'white',
+    backgroundColor: '#20262E',
     padding: 10,
   },
   button: {
-    backgroundColor: '#F55050',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 50,
