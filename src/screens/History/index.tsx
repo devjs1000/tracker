@@ -4,7 +4,7 @@ import { styles } from './styles'
 
 const History = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>History</Text>
     </View>
   )
