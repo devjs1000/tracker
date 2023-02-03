@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import Input from '../../ui/Input';
@@ -41,7 +41,7 @@ const Login = () => {
     const isValid = checkLogin();
     if (isValid) {
       await updateProfile(false);
-    }else{
+    } else {
       Alert.alert('Invalid password');
     }
   };
@@ -63,14 +63,36 @@ const Login = () => {
     console.log('user', user);
   }, []);
 
+  const titleMessage = isRegister ? 'Welcome!' : 'Hello Again!';
+  const descriptionMessage = isRegister
+    ? 'Welcome to the app'
+    : 'Welcome back youve been missed!';
+
+  const handleSwitchMode = () => {
+    setMode(isRegister ? 'login' : 'register');
+  };
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>{titleMessage}</Text>
+      <Text style={styles.description}>{descriptionMessage}</Text>
       <View>
         {isRegister && (
           <Input placeholder="name" onChangeText={handleChange('name')} />
         )}
-        <Input secureTextEntry={true} placeholder="password" onChangeText={handleChange('password')} />
+        <Input
+          secureTextEntry={true}
+          placeholder="password"
+          onChangeText={handleChange('password')}
+        />
         <Button onPress={handleSubmit}>{mode}</Button>
+        <Text style={styles.orText}>
+          or
+        </Text>
+        <Pressable onPress={handleSwitchMode} style={styles.switchMode}>
+          <Text style={styles.switchModeText}>
+            {isRegister ? 'Login' : 'Register'}
+          </Text>
+        </Pressable>
       </View>
     </View>
   );

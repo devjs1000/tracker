@@ -13,19 +13,11 @@ export default Input;
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     padding: 10,
     margin: 10,
     marginHorizontal: 'auto',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
     width: 300,
     display: 'flex',
     color: 'black',

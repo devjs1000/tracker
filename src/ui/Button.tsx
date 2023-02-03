@@ -13,7 +13,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'tomato',
+    backgroundColor: '#913175',
     padding: 10,
     borderRadius: 10,
   },
