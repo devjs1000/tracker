@@ -1,21 +1,23 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const TaskButton = () => {
-  const [active, setActive] = React.useState(false);
-
+const TaskButton = ({handlePress, active, time}: TaskButtonProps) => {
   const activeMessage = active ? 'End' : 'Start';
-  const handlePress = () => {
-    setActive(!active);
+  const timePassed = time?.current - time?.initial;
+  const seconds = Math.floor((timePassed / 1000) % 60);
+  const minutes = Math.floor((timePassed / 1000 / 60) % 60);
+  const hours = Math.floor((timePassed / (1000 * 60 * 60)) % 24);
+  const showNonZero = (value: number, suffix: string) => {
+    return value > 0 ? <Text style={styles.time}>{value}{suffix}</Text> : '';
   };
   return (
     <View style={styles.container}>
       <Pressable style={styles.buttonContainer} onPress={handlePress}>
         <Text style={styles.buttonText}>{activeMessage} Task</Text>
         <View style={styles.timerContainer}>
-          <Text style={styles.time}>hh</Text>
-          <Text style={styles.time}>mm</Text>
-          <Text style={styles.time}>ss</Text>
+          {showNonZero(hours, 'h')}
+          {showNonZero(minutes, 'm')}
+          {showNonZero(seconds, 's')}
         </View>
       </Pressable>
     </View>
@@ -62,5 +64,15 @@ const styles = StyleSheet.create({
     height: 50,
     textAlign: 'center',
     textAlignVertical: 'center',
+    borderRadius: 25,
   },
 });
+
+interface TaskButtonProps {
+  handlePress: () => void;
+  active: boolean;
+  time: {
+    initial: number;
+    current: number;
+  };
+}

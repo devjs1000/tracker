@@ -1,11 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const TaskDisplay = () => {
+const TaskDisplay = ({task}: TaskDisplayProps) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Task Title</Text>
-      <Text style={styles.description}>Task Description</Text>
+      <Text style={styles.title}>{task.title}</Text>
+      <Text style={styles.description}>{task.description}</Text>
     </View>
   );
 };
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     backgroundColor: 'rgba(255,255,255,0.05)',
-    width: '100%', 
+    width: '100%',
     padding: 20,
     borderBottomWidth: 2,
     borderBottomColor: '#20262E',
@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: 20,
-
   },
 });
+
+interface TaskDisplayProps {
+  task: {
+    title: string;
+    description: string;
+  };
+}
