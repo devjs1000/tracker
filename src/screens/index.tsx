@@ -24,9 +24,9 @@ const Screen = () => {
               tabBarActiveTintColor: 'tomato',
               tabBarShowLabel: false,
               header: () => <NavBar />,
-            }}
-            
-            >
+              tabBarActiveBackgroundColor: '#20262E',
+              tabBarInactiveBackgroundColor: '#20262E',
+            }}>
             <Tab.Screen
               name="Home"
               options={{
