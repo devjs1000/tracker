@@ -1,4 +1,11 @@
-import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  Pressable,
+  Text,
+  View,
+  ImageBackground,
+  Image,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import Input from '../../ui/Input';
@@ -7,6 +14,7 @@ import {useDispatch} from 'react-redux';
 import {login} from '../../states/process.slice';
 import {getDb, updateDb} from '../../helpers/db';
 import {keys} from '../../constants/core';
+import {BlurView} from '@react-native-community/blur';
 
 const Login = () => {
   const [mode, setMode] = useState('register');
@@ -60,41 +68,45 @@ const Login = () => {
 
   useEffect(() => {
     fetchMode();
-    console.log('user', user);
   }, []);
 
   const titleMessage = isRegister ? 'Welcome!' : 'Hello Again!';
   const descriptionMessage = isRegister
     ? 'Welcome to the app'
-    : 'Welcome back youve been missed!';
+    : "Welcome back you've been missed!";
 
   const handleSwitchMode = () => {
     setMode(isRegister ? 'login' : 'register');
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{titleMessage}</Text>
-      <Text style={styles.description}>{descriptionMessage}</Text>
-      <View>
-        {isRegister && (
-          <Input placeholder="name" onChangeText={handleChange('name')} />
-        )}
-        <Input
-          secureTextEntry={true}
-          placeholder="password"
-          onChangeText={handleChange('password')}
-        />
-        <Button onPress={handleSubmit}>{mode}</Button>
-        <Text style={styles.orText}>
-          or
-        </Text>
-        <Pressable onPress={handleSwitchMode} style={styles.switchMode}>
-          <Text style={styles.switchModeText}>
-            {isRegister ? 'Login' : 'Register'}
-          </Text>
-        </Pressable>
+    <ImageBackground
+      source={{
+        uri: 'https://media3.giphy.com/media/26xBzu2ogAunL19hS/giphy.gif',
+      }}
+      style={styles.bgImage}>
+      <BlurView style={styles.blurView} blurType="dark" blurAmount={30} />
+      <View style={styles.container}>
+        <Text style={styles.title}>{titleMessage}</Text>
+        <Text style={styles.description}>{descriptionMessage}</Text>
+        <View>
+          {isRegister && (
+            <Input placeholder="name" onChangeText={handleChange('name')} />
+          )}
+          <Input
+            secureTextEntry={true}
+            placeholder="password"
+            onChangeText={handleChange('password')}
+          />
+          <Button onPress={handleSubmit}>{mode}</Button>
+          <Text style={styles.orText}>or</Text>
+          <Pressable onPress={handleSwitchMode} style={styles.switchMode}>
+            <Text style={styles.switchModeText}>
+              {isRegister ? 'Login' : 'Register'}
+            </Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
