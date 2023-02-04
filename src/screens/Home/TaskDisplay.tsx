@@ -14,7 +14,7 @@ export default TaskDisplay;
 
 const styles = StyleSheet.create({
   container: {
-    height: 300,
+    height: 400,
     width: '100%',
     backgroundColor: 'rgba(255,255,255,0.05)',
     display: 'flex',

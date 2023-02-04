@@ -57,4 +57,7 @@ export const styles = StyleSheet.create({
    
 
   },
+  scrollView:{
+    backgroundColor:'#20262E'
+  }
 });

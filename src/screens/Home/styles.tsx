@@ -7,5 +7,8 @@ export const styles = StyleSheet.create({
   },
   text:{
     color:'#fff'
+  },
+  scrollView:{
+    backgroundColor:'#20262E'
   }
 });

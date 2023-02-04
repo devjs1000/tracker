@@ -95,7 +95,7 @@ const Home = () => {
   }, [active]);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         <View>
           <TaskButton handlePress={handlePress} active={active} time={time} />

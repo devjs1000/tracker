@@ -5,6 +5,7 @@ import {getDb} from '../../helpers/db';
 import {keys} from '../../constants/core';
 import {TimeDisplay} from '../Home/TimeDisplay';
 import { useFocusEffect } from '@react-navigation/native';
+import { MiniTimeDisplay } from './MiniTimeDisplay';
 
 const History = () => {
   const [data, setData] = useState<any>([]);
@@ -13,9 +14,6 @@ const History = () => {
     const res = (await getDb(keys.data)) || {};
     setData(res);
   };
-  // useEffect(() => {
-  //   fetchData();
-  // });
 
   useFocusEffect(()=>{
     fetchData()
@@ -23,7 +21,7 @@ const History = () => {
 
   const dataKeys = Object.keys(data);
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         {dataKeys.map((item: any, i: number) => {
           return (
@@ -38,7 +36,7 @@ const History = () => {
                       {item?.task?.description}
                     </Text>
                     <View style={styles.timeContainer}>
-                      <TimeDisplay time={time} />
+                      <MiniTimeDisplay time={time} />
                     </View>
                   </View>
                 );
