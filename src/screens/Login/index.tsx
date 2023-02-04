@@ -80,11 +80,9 @@ const Login = () => {
   };
   return (
     <ImageBackground
-      source={{
-        uri: 'https://media3.giphy.com/media/26xBzu2ogAunL19hS/giphy.gif',
-      }}
+      source={require('../../assets/tumblr_20c4a41f0b816fa26bb3454948c77cfe_e383f639_400.gif')}
       style={styles.bgImage}>
-      <BlurView style={styles.blurView} blurType="dark" blurAmount={30} />
+      <BlurView style={styles.blurView} blurType="dark" blurAmount={60} />
       <View style={styles.container}>
         <Text style={styles.title}>{titleMessage}</Text>
         <Text style={styles.description}>{descriptionMessage}</Text>

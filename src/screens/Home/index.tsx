@@ -32,6 +32,7 @@ const Home = () => {
       }
       await updateDb(keys.data, data);
       await updateDb(keys.active, {status: false});
+      setTime({initial: new Date().getTime(), current: new Date().getTime()});
     } else {
       setShowModal(true);
     }
@@ -57,9 +58,10 @@ const Home = () => {
       status: true,
       timeKey: timeKey,
       dateKey: dateKey,
-      time: time.initial,
+      time: timeKey,
       task,
     });
+    setTime({initial: new Date().getTime(), current: new Date().getTime()});
     setShowModal(false);
     setActive(true);
   };
@@ -84,15 +86,13 @@ const Home = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log({active});
       if (active) {
-        setTime((prev: any) => ({...prev, current: new Date().getTime()}));
-      } else {
-        setTime({initial: new Date().getTime(), current: new Date().getTime()});
+        console.log('active', active);
+        setTime({initial: time.initial, current: new Date().getTime()});
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [active, time.initial]);
+  }, [active]);
 
   return (
     <ScrollView>
