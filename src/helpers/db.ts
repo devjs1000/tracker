@@ -12,7 +12,7 @@ export const updateDb = async (key: string, value: any, parse = true) => {
 export const getDb = async (key: string, parse = true) => {
     try {
         const value: any = await storage.getItem(key);
-        console.log(value);
+        console.log(key);
         return value ? (parse ? JSON.parse(value) : value) : null;
     } catch (error) {
         console.error(error);
